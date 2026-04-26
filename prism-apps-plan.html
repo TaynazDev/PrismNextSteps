@@ -1,0 +1,513 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prism Suite — App Planning Docs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#E8829A;--blue:#7AAECC;--purple:#b39dc0;--grad:linear-gradient(135deg,#E8829A 0%,#b39dc0 50%,#7AAECC 100%);--bg:#0c0c0e;--surface:#131316;--surface2:#1a1a1f;--surface3:#202026;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--text:#eeecf4;--muted:rgba(238,236,244,0.5);--faint:rgba(238,236,244,0.25);--drop:#6AADDC;--drop-bg:rgba(106,173,220,0.1);--grind:#6DC98A;--grind-bg:rgba(109,201,138,0.1);--roast:#E8825A;--roast-bg:rgba(232,130,90,0.1);--mood:#C07BC4;--mood-bg:rgba(192,123,196,0.1);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(12,12,14,0.88);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);padding:0 40px;display:flex;align-items:center;height:56px;gap:0;}
+.nav-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:.05em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:28px;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{padding:6px 16px;border-radius:8px;font-size:13px;color:var(--muted);cursor:pointer;border:none;background:transparent;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:7px;}
+.nav-tab:hover{color:var(--text);background:var(--surface2);}
+.nav-tab.active{color:var(--text);background:var(--surface2);font-weight:500;}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.page{display:none;}
+.page.active{display:block;}
+.hero{padding:64px 40px 48px;border-bottom:.5px solid var(--border);position:relative;overflow:hidden;max-width:1100px;margin:0 auto;}
+.glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);opacity:.16;}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:100px;border:.5px solid var(--border2);background:var(--surface2);font-size:12px;color:var(--muted);margin-bottom:20px;}
+.bdot{width:6px;height:6px;border-radius:50%;}
+h1{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1.05;margin-bottom:14px;letter-spacing:-.02em;}
+.hero p{font-size:16px;color:var(--muted);max-width:540px;margin-bottom:36px;}
+.hero-meta{display:flex;gap:36px;flex-wrap:wrap;}
+.mi{display:flex;flex-direction:column;gap:3px;}
+.ml{font-size:11px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+.mv{font-size:14px;font-weight:500;}
+.content{max-width:1100px;margin:0 auto;padding:0 40px 80px;}
+.sec{padding-top:52px;}
+.sl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.sl::after{content:'';flex:1;height:.5px;background:var(--border);}
+h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em;}
+h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;margin-bottom:8px;}
+.card{background:var(--surface);border:.5px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:10px;}
+.card p{font-size:14px;color:var(--muted);line-height:1.6;}
+.card2{border-color:var(--border2);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ft{background:var(--surface);border:.5px solid var(--border);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;}
+.fn{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;margin-bottom:10px;}
+.ft h3{font-size:14px;margin-bottom:6px;}
+.ft p{font-size:13px;color:var(--muted);line-height:1.5;}
+.ftl{position:absolute;top:0;left:0;right:0;height:1px;opacity:.5;}
+.sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.sc{background:var(--surface2);border:.5px solid var(--border);border-radius:12px;padding:16px 18px;}
+.scat{font-size:11px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.sv{font-size:14px;font-weight:500;margin-bottom:4px;}
+.sc p{font-size:12px;color:var(--muted);}
+.rm{display:flex;flex-direction:column;}
+.rmi{display:flex;gap:18px;padding-bottom:28px;}
+.rmi:last-child{padding-bottom:0;}
+.rml{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0;}
+.rmd{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;}
+.rml-line{width:.5px;flex:1;background:var(--border);margin-top:6px;}
+.rmb{flex:1;padding-top:3px;}
+.rmb h3{font-size:14px;margin-bottom:4px;}
+.rmb p{font-size:13px;color:var(--muted);}
+.ql{}
+.qi{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:.5px solid var(--border);}
+.qi:last-child{border-bottom:none;}
+.qm{font-family:'Syne',sans-serif;font-size:13px;color:var(--faint);width:18px;flex-shrink:0;}
+.qi h4{font-size:14px;font-weight:500;margin-bottom:3px;}
+.qi p{font-size:13px;color:var(--muted);}
+.conns{display:flex;flex-direction:column;gap:8px;}
+.ci{background:var(--surface);border:.5px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;}
+.ca{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+.ci p{font-size:13px;color:var(--muted);line-height:1.5;}
+.ovg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+.ovc{background:var(--surface);border:.5px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:border-color .15s,transform .15s;position:relative;overflow:hidden;}
+.ovc:hover{transform:translateY(-2px);border-color:var(--border2);}
+.ovt{position:absolute;top:0;left:0;right:0;height:2px;}
+.ovi{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.ovc h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px;}
+.ovtag{font-size:12px;color:var(--faint);margin-bottom:12px;}
+.ovd{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+.ovf{display:flex;align-items:center;justify-content:space-between;}
+.ovgo{font-size:12px;color:var(--muted);border:.5px solid var(--border2);background:transparent;padding:5px 14px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.ovgo:hover{background:var(--surface2);color:var(--text);}
+.sp{font-size:11px;padding:3px 10px;border-radius:100px;border:.5px solid var(--border2);color:var(--faint);}
+code{background:var(--surface2);padding:2px 8px;border-radius:5px;font-size:13px;}
+.dr{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+.dd{width:5px;height:5px;border-radius:50%;background:var(--faint);flex-shrink:0;margin-top:7px;}
+.dr p{font-size:13px;color:var(--muted);line-height:1.5;}
+@media(max-width:700px){.nav{padding:0 16px;}.hero,.content{padding-left:20px;padding-right:20px;}h1{font-size:34px;}.g2,.g3,.fg,.sg,.ovg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-brand">PRISM SUITE</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="sp('overview',this)">Overview</button>
+    <button class="nav-tab" onclick="sp('drop',this)"><span class="dot" style="background:var(--drop)"></span>Prism Drop</button>
+    <button class="nav-tab" onclick="sp('grind',this)"><span class="dot" style="background:var(--grind)"></span>Prism Grind</button>
+    <button class="nav-tab" onclick="sp('roast',this)"><span class="dot" style="background:var(--roast)"></span>Prism Roast</button>
+    <button class="nav-tab" onclick="sp('mood',this)"><span class="dot" style="background:var(--mood)"></span>Prism Mood</button>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="pg-overview" class="page active">
+<div class="hero">
+  <div class="glow" style="width:600px;height:600px;top:-200px;right:-100px;background:radial-gradient(circle,#E8829A,#7AAECC);"></div>
+  <div class="badge"><span class="bdot" style="background:var(--grad)"></span>Prism Suite — Gen Z expansion</div>
+  <h1>Four new apps.<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">One ecosystem.</span></h1>
+  <p>Planning documents for Drop, Grind, Roast, and Mood — the next wave of Prism apps built for Gen Z. All interconnected. All AI-powered.</p>
+  <div class="hero-meta">
+    <div class="mi"><span class="ml">Status</span><span class="mv">Planning</span></div>
+    <div class="mi"><span class="ml">Target</span><span class="mv">Gen Z</span></div>
+    <div class="mi"><span class="ml">AI Model</span><span class="mv">Claude Sonnet 4.6</span></div>
+    <div class="mi"><span class="ml">Suite</span><span class="mv">Prism by Prism</span></div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec">
+    <div class="sl">Apps</div>
+    <div class="ovg">
+      <div class="ovc" onclick="sp('drop',null)">
+        <div class="ovt" style="background:var(--drop)"></div>
+        <div class="ovi" style="background:var(--drop-bg)"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3C11 3 6 9 6 13a5 5 0 0010 0C16 9 11 3 11 3Z" fill="#6AADDC"/><circle cx="11" cy="13" r="2" fill="#0c0c0e" opacity=".4"/></svg></div>
+        <h3 style="color:var(--drop)">Prism Drop</h3>
+        <div class="ovtag">Time capsule + memory app</div>
+        <p class="ovd">Lock memories, messages, and photos until a future date. AI writes letters to your future self and reflects on unlock.</p>
+        <div class="ovf"><button class="ovgo">Open plan →</button><span class="sp">Planning</span></div>
+      </div>
+      <div class="ovc" onclick="sp('grind',null)">
+        <div class="ovt" style="background:var(--grind)"></div>
+        <div class="ovi" style="background:var(--grind-bg)"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="4" y="11" width="3.5" height="8" rx="1" fill="#4a9a64"/><rect x="9.25" y="7" width="3.5" height="12" rx="1" fill="#4a9a64"/><rect x="14.5" y="3" width="3.5" height="16" rx="1" fill="#6DC98A"/></svg></div>
+        <h3 style="color:var(--grind)">Prism Grind</h3>
+        <div class="ovtag">AI goal operating system</div>
+        <p class="ovd">Tell it your dream, it builds the roadmap. Daily missions, weekly AI coaching, social accountability.</p>
+        <div class="ovf"><button class="ovgo">Open plan →</button><span class="sp">Planning</span></div>
+      </div>
+      <div class="ovc" onclick="sp('roast',null)">
+        <div class="ovt" style="background:var(--roast)"></div>
+        <div class="ovi" style="background:var(--roast-bg)"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4C11 4 8 8 8 11.5a3 3 0 006 0C14 8 11 4 11 4Z" fill="#E8825A"/></svg></div>
+        <h3 style="color:var(--roast)">Prism Roast</h3>
+        <div class="ovtag">AI brutal honest feedback</div>
+        <p class="ovd">Upload your work, get a specific roast and a concrete upgrade checklist. Funny, useful, shareable.</p>
+        <div class="ovf"><button class="ovgo">Open plan →</button><span class="sp">Planning</span></div>
+      </div>
+      <div class="ovc" onclick="sp('mood',null)">
+        <div class="ovt" style="background:var(--mood)"></div>
+        <div class="ovi" style="background:var(--mood-bg)"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="6" stroke="#C07BC4" stroke-width="1.5" fill="none"/><circle cx="8.5" cy="9.5" r="1" fill="#C07BC4"/><circle cx="13.5" cy="9.5" r="1" fill="#C07BC4"/><path d="M8.5 13.5C8.5 13.5 9.5 15 11 15s2.5-1.5 2.5-1.5" stroke="#C07BC4" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <h3 style="color:var(--mood)">Prism Mood</h3>
+        <div class="ovtag">AI emotional intelligence</div>
+        <p class="ovd">10-second daily check-in. AI finds patterns and personalises the entire Prism suite based on how you feel.</p>
+        <div class="ovf"><button class="ovgo">Open plan →</button><span class="sp">Planning</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sl">Suite connections</div>
+    <h2>How they all connect</h2>
+    <div class="conns">
+      <div class="ci"><span class="ca" style="background:var(--drop-bg);color:var(--drop)">Drop</span><p>Good Mood days trigger a Drop suggestion. Grind milestones auto-prompt a memory capsule. Unlocks share to Prism social.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--grind-bg);color:var(--grind)">Grind</span><p>Mood score adjusts daily mission difficulty. Milestones post to Prism social and create a Drop. Roast can review progress honestly.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--roast-bg);color:var(--roast)">Roast</span><p>Web/code roasts send to VibesAI for one-tap fixing. Results share to Prism social. Grind adds roast feedback as a mission.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--mood-bg);color:var(--mood)">Mood</span><p>The invisible glue. Feeds data to Grind (difficulty), Roast (tone), Drop (good-day suggestions), Social (feed curation), VibesAI (project ideas).</p></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sl">Build order recommendation</div>
+    <div class="card">
+      <p>Suggested sequence: <strong style="color:var(--roast)">Roast first</strong> (lowest effort, highest viral spread — free marketing from day one), then <strong style="color:var(--mood)">Mood</strong> (low effort, highest suite value — feeds all other apps), then <strong style="color:var(--drop)">Drop</strong> (emotionally sticky, best retention), then <strong style="color:var(--grind)">Grind</strong> (highest complexity, but strongest long-term engagement).</p>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sl">Shared decisions</div>
+    <div class="card ql">
+      <div class="qi"><span class="qm">?</span><div><h4>Prism ID — one account everywhere</h4><p>Decide on auth (Clerk or Supabase Auth) once. Same login, avatar, and username across all four apps.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Prism Pass — one subscription</h4><p>All four apps have free tiers. Pro features can be unlocked individually or via a single Prism Pass. Decide before any app launches.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Shared notification centre</h4><p>Route all push notifications through one Prism layer rather than per-app. One place to manage everything.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Mood API availability</h4><p>Mood's suite personalisation only works if the other apps are built to consume it. Plan the Mood API endpoint before building Grind or Roast.</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- DROP -->
+<div id="pg-drop" class="page">
+<div class="hero">
+  <div class="glow" style="width:500px;height:500px;top:-150px;right:-80px;background:radial-gradient(circle,#6AADDC,transparent);"></div>
+  <div class="badge"><span class="bdot" style="background:var(--drop)"></span>Prism Suite — App Plan</div>
+  <h1><span style="background:linear-gradient(135deg,#6AADDC,#9dd4ef);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prism Drop</span></h1>
+  <p>A time capsule app for Gen Z. Lock memories, messages, and moments until a future date. AI writes letters to your future self and reflects on what you predicted when capsules unlock.</p>
+  <div class="hero-meta">
+    <div class="mi"><span class="ml">Category</span><span class="mv">Social / Memory</span></div>
+    <div class="mi"><span class="ml">Platforms</span><span class="mv">iOS · Web</span></div>
+    <div class="mi"><span class="ml">Retention driver</span><span class="mv">People don't delete apps with locked memories inside</span></div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec"><div class="sl">Why it works</div>
+    <div class="g2">
+      <div class="card card2"><h3>Undeleted forever</h3><p>Once a capsule is locked inside Drop, users will never uninstall it. The app literally holds their future. One of the strongest retention mechanics possible.</p></div>
+      <div class="card card2"><h3>Viral by nature</h3><p>Shared capsule unlocks are inherently shareable — "my friend sent me a time capsule that just unlocked" is a story people tell. Built-in organic spread.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Core features</div><h2>What Drop does</h2>
+    <div class="fg">
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">01</div><h3>Personal capsules</h3><p>Write a message, record a voice note, upload a photo or video — lock it until any future date. The unlock date cannot be moved earlier. Ever.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">02</div><h3>AI letter writer</h3><p>Tell AI how you're feeling right now and where you want to be. It writes a personalised letter to your future self. Lock it without reading it first.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">03</div><h3>Shared capsules</h3><p>Send a capsule to a friend — a birthday message, a bet, a shared memory — that unlocks on a specific date for both of you. Neither can open it early.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">04</div><h3>Group capsules</h3><p>A friend group all contributes — photos, predictions, messages. Unlocks at graduation, a reunion, or any milestone the group sets together.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">05</div><h3>AI unlock reflection</h3><p>When a capsule unlocks, AI reads what you wrote, compares to your current Grind progress and Mood history, and generates a then-vs-now reflection.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--drop)"></div><div class="fn" style="color:var(--drop)">06</div><h3>Prism Rewind — New Year event</h3><p>Every Jan 1, all capsules set for "this year" unlock simultaneously. The whole Prism community experiences it together — massive annual viral moment.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">UX principles</div><h2>What the experience must feel like</h2>
+    <div class="card" style="margin-bottom:10px"><h3>The lock is sacred</h3><p>Users must never unlock early — not even premium users. The entire emotional value of Drop depends on the lock date being absolute. This is a trust product first.</p></div>
+    <div class="card" style="margin-bottom:10px"><h3>The unlock should feel like an event</h3><p>Full-screen animation, a build-up, a moment. Think opening a present. The unlock screen is the most important UI in the whole app — spend 80% of design time on it.</p></div>
+    <div class="card"><h3>Creating should feel meaningful, not mechanical</h3><p>Guide users conversationally: "What's happening in your life right now?", "What do you hope changes?", "What do you never want to forget?" AI fills the letter from their answers.</p></div>
+  </div>
+  <div class="sec"><div class="sl">Tech stack</div>
+    <div class="sg">
+      <div class="sc"><div class="scat">Storage</div><div class="sv">Supabase</div><p>capsules table with row-level security. Content query blocked until unlock_date has passed — truly locked at the DB level.</p></div>
+      <div class="sc"><div class="scat">Media</div><div class="sv">Supabase Storage</div><p>Photos and videos in private buckets. Signed URLs generated only after unlock date passes. Inaccessible until then.</p></div>
+      <div class="sc"><div class="scat">Unlock trigger</div><div class="sv">Supabase Edge Functions</div><p>Daily cron scans for capsules whose unlock_date has passed and triggers push notifications to recipients.</p></div>
+      <div class="sc"><div class="scat">AI</div><div class="sv">Claude Sonnet 4.6</div><p>Letter writing on creation, reflection generation on unlock. Both single-shot prompts — no conversation history needed.</p></div>
+      <div class="sc"><div class="scat">Push notifications</div><div class="sv">Expo Notifications</div><p>The unlock notification is the most important moment in the product. It needs to feel special — custom sound, full-screen push.</p></div>
+      <div class="sc"><div class="scat">Frontend</div><div class="sv">Next.js + React Native</div><p>Share as much code as possible between web and iOS. The lock/unlock animation is the centrepiece interaction — invest heavily.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Suite connections</div><h2>How Drop connects to Prism</h2>
+    <div class="conns">
+      <div class="ci"><span class="ca" style="background:var(--mood-bg);color:var(--mood)">Mood</span><p>On a high mood day, Prism Mood suggests: "Today feels special — want to Drop a memory?" Captures the best moments automatically.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--grind-bg);color:var(--grind)">Grind</span><p>When a Grind milestone is hit, auto-prompt: "You just hit your goal — lock a memory of this moment?" Achievement becomes memory.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--surface3);color:#9aa8e0">Prism Social</span><p>Unlock moments can be shared as posts. "My time capsule just unlocked — here's what I wrote to myself a year ago." Massive organic content.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--surface3);color:#c0b090">VibesAI</span><p>Unlock reflections can be sent to VibesAI: "Turn this reflection into a personal memory website." Creation meets memory.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Monetisation</div>
+    <div class="g3">
+      <div class="card"><h3>Free</h3><p>Up to 5 personal capsules, 1 shared capsule, text and photo only. Enough to get hooked.</p></div>
+      <div class="card"><h3>Drop Pro</h3><p>Unlimited capsules, video, group capsules up to 20 people, AI letter writer, custom unlock animations.</p></div>
+      <div class="card"><h3>Prism Pass</h3><p>Drop Pro included in the full Prism suite subscription.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Roadmap</div>
+    <div class="rm">
+      <div class="rmi"><div class="rml"><div class="rmd" style="background:var(--drop);border-color:var(--drop);color:#fff">1</div><div class="rml-line"></div></div><div class="rmb"><h3>MVP — personal capsules</h3><p>Text + photo capsules, lock dates, unlock notifications, basic AI letter writer. Web only. Get the core loop right first.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">2</div><div class="rml-line"></div></div><div class="rmb"><h3>Social — shared + group capsules</h3><p>Send to friends. Group capsules. Unlock sharing to Prism social. The annual Prism Rewind event.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">3</div><div class="rml-line"></div></div><div class="rmb"><h3>AI unlock reflection</h3><p>Then-vs-now reflection on unlock. Grind and Mood data integration. Video capsule support.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">4</div></div><div class="rmb"><h3>iOS + suite integration</h3><p>Native iOS app. Deep links from Mood and Grind. Prism Pass integration.</p></div></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Open questions</div>
+    <div class="card ql">
+      <div class="qi"><span class="qm">?</span><div><h4>What happens if a shared capsule member deletes their account?</h4><p>If someone in a group capsule deletes their Prism account before the unlock date, what do other recipients see? Needs a clear policy before launch.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Can the unlock date be extended?</h4><p>Pushing a date further could be a premium feature, but it risks undermining the sacred lock principle. Decide this carefully — it affects the whole trust model.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Content moderation for shared capsules</h4><p>Harmful content in a shared capsule can't be reviewed before the lock date. Need AI pre-screening on upload and a clear reporting mechanism.</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- GRIND -->
+<div id="pg-grind" class="page">
+<div class="hero">
+  <div class="glow" style="width:500px;height:500px;top:-150px;right:-80px;background:radial-gradient(circle,#6DC98A,transparent);"></div>
+  <div class="badge"><span class="bdot" style="background:var(--grind)"></span>Prism Suite — App Plan</div>
+  <h1><span style="background:linear-gradient(135deg,#6DC98A,#a8e4bb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prism Grind</span></h1>
+  <p>An AI goal operating system for Gen Z. Tell it your big dream, it reverse-engineers it into a weekly roadmap. One daily mission, adaptive AI coaching, and social accountability built right in.</p>
+  <div class="hero-meta">
+    <div class="mi"><span class="ml">Category</span><span class="mv">Productivity / AI</span></div>
+    <div class="mi"><span class="ml">Platforms</span><span class="mv">iOS · Web · Desktop</span></div>
+    <div class="mi"><span class="ml">Key insight</span><span class="mv">One mission per day — not a list. This is the whole design philosophy.</span></div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec"><div class="sl">Why it works</div>
+    <div class="g2">
+      <div class="card card2"><h3>AI that adapts, not judges</h3><p>Most productivity apps make you feel guilty when you miss a day. Grind recalibrates — it adjusts the plan, not your self-worth. This emotional difference is everything.</p></div>
+      <div class="card card2"><h3>One mission, not a list</h3><p>Always one focused action per day. Not ten tasks. Not a checklist. This single design decision is what makes it feel achievable rather than overwhelming.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Core features</div><h2>What Grind does</h2>
+    <div class="fg">
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">01</div><h3>Goal intake — plain language</h3><p>"I want to get into uni", "I want to ship my first app", "I want 10k followers". AI turns any dream into a structured roadmap with phases and weekly checkpoints.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">02</div><h3>Daily mission</h3><p>One focused task every day. Completing it earns XP. Mood data from Prism Mood adjusts difficulty — stretch missions on high-energy days, lighter ones when you're low.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">03</div><h3>Weekly AI debrief</h3><p>Every Sunday, AI reviews your week — what you hit, what you missed, patterns it spotted. Then it adjusts the plan. Feels like a personal coach checking in, not a report card.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">04</div><h3>Social accountability</h3><p>Friends follow your goals and cheer milestones. Hitting a goal posts to Prism social automatically. Others can join the same goal and race to it alongside you.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">05</div><h3>XP + streak system</h3><p>Gamified progress. Missing a day pauses the streak — it doesn't reset progress. Eliminates the "I missed one day so I quit" spiral that kills most productivity apps.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--grind)"></div><div class="fn" style="color:var(--grind)">06</div><h3>Multi-goal support</h3><p>Up to 3 goals simultaneously (more with Grind Pro). AI balances daily missions so they don't clash. Each goal has its own roadmap and progress track.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">AI system design</div><h2>How the AI brain works</h2>
+    <div class="card" style="margin-bottom:10px"><h3>Goal decomposition — on creation</h3><p>Send a structured prompt to Claude: the user's goal, their timeframe, current skill level, and daily time available. Claude returns a JSON roadmap with phases, weekly targets, and sample missions. Stored and referenced for the entire goal lifecycle.</p></div>
+    <div class="card" style="margin-bottom:10px"><h3>Daily mission generation — each morning</h3><p>Pull the current phase, yesterday's completion status, and today's Mood score. Ask Claude: "Given phase X of this goal, yesterday's result, and today's energy level Y, what is the single best mission for today?" Returns one task with a time estimate.</p></div>
+    <div class="card"><h3>Weekly recalibration — every Sunday</h3><p>Send the full week's data: missions assigned, completed, Mood scores, user notes. Claude assesses progress, adjusts the roadmap if needed, and writes a personalised weekly report. Tone: honest but encouraging.</p></div>
+  </div>
+  <div class="sec"><div class="sl">Tech stack</div>
+    <div class="sg">
+      <div class="sc"><div class="scat">Frontend</div><div class="sv">Next.js</div><p>Web-first. Wrap with Tauri for desktop, React Native for iOS. Share as much logic as possible across platforms.</p></div>
+      <div class="sc"><div class="scat">Database</div><div class="sv">Supabase</div><p>goals, roadmap_phases, daily_missions, completions, xp_log tables. Real-time subscriptions for social accountability.</p></div>
+      <div class="sc"><div class="scat">AI</div><div class="sv">Claude Sonnet 4.6</div><p>Goal decomposition (once), daily mission generation (daily cron), weekly debrief (Sunday cron). Server-side only.</p></div>
+      <div class="sc"><div class="scat">Scheduling</div><div class="sv">Supabase Edge Functions</div><p>Daily and weekly crons for mission generation and debriefs. Runs server-side with no client needed.</p></div>
+      <div class="sc"><div class="scat">Notifications</div><div class="sv">Expo / Web Push</div><p>Daily mission reminder, milestone celebrations, friend cheers, weekly debrief alert. Keep volume low — only meaningful moments.</p></div>
+      <div class="sc"><div class="scat">Auth</div><div class="sv">Prism ID</div><p>Same login as all Prism apps. No separate account creation needed.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Suite connections</div><h2>How Grind connects to Prism</h2>
+    <div class="conns">
+      <div class="ci"><span class="ca" style="background:var(--mood-bg);color:var(--mood)">Mood</span><p>Today's mood score adjusts mission difficulty. Low mood = lighter mission. High energy = stretch mission. Grind reads from Mood daily at mission generation time.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--drop-bg);color:var(--drop)">Drop</span><p>Milestone hits trigger a prompt: "You just finished phase 1 — lock a memory of this moment?" Connects achievement to permanent memory.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--roast-bg);color:var(--roast)">Roast</span><p>Send goal progress to Roast for honest feedback: "Roast my progress this month." AI gives constructive criticism and a fix list. Accountability meets honesty.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--surface3);color:#9aa8e0">Prism Social</span><p>Milestone posts auto-generate to Prism social. Friends can cheer, react, or join the same goal for a shared race.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Monetisation</div>
+    <div class="g3">
+      <div class="card"><h3>Free</h3><p>1 active goal, daily missions, weekly debrief, social features. Enough to experience the full core value.</p></div>
+      <div class="card"><h3>Grind Pro</h3><p>Up to 5 goals, full Mood integration, detailed analytics, custom mission scheduling, priority AI queue.</p></div>
+      <div class="card"><h3>Prism Pass</h3><p>Grind Pro included in the suite subscription alongside all other Prism apps.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Roadmap</div>
+    <div class="rm">
+      <div class="rmi"><div class="rml"><div class="rmd" style="background:var(--grind);border-color:var(--grind);color:#fff">1</div><div class="rml-line"></div></div><div class="rmb"><h3>MVP — single goal + daily missions</h3><p>Goal intake, Claude roadmap generation, daily mission, XP tracking. Web only.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">2</div><div class="rml-line"></div></div><div class="rmb"><h3>AI debrief + social</h3><p>Weekly debrief, friend following, milestone posts to Prism social, Mood integration.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">3</div><div class="rml-line"></div></div><div class="rmb"><h3>Multi-goal + Drop/Roast integration</h3><p>Up to 3 goals, AI balancing across them, Drop milestone memories, Roast progress review.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">4</div></div><div class="rmb"><h3>iOS + desktop + Prism Pass</h3><p>Native iOS app, Tauri desktop wrapper, widget support, full Prism Pass integration.</p></div></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Open questions</div>
+    <div class="card ql">
+      <div class="qi"><span class="qm">?</span><div><h4>What if the goal is too vague?</h4><p>Goals like "be happier" are hard to decompose. Need a goal refinement step — AI asks clarifying questions before generating the roadmap. Build this into onboarding.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>What if the goal changes mid-way?</h4><p>Allow editing with AI re-planning, but preserve completed milestones so progress isn't lost psychologically. Show clearly that the roadmap will be regenerated.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Can users game mood scores to get easier missions?</h4><p>If users log 1/5 every day to get lighter Grind missions, the app stops being useful. Consider using a rolling 3-day average rather than today's score alone.</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ROAST -->
+<div id="pg-roast" class="page">
+<div class="hero">
+  <div class="glow" style="width:500px;height:500px;top:-150px;right:-80px;background:radial-gradient(circle,#E8825A,transparent);"></div>
+  <div class="badge"><span class="bdot" style="background:var(--roast)"></span>Prism Suite — App Plan</div>
+  <h1><span style="background:linear-gradient(135deg,#E8825A,#f0ae90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prism Roast</span></h1>
+  <p>AI that tells you the truth. Upload your work — portfolio, code, essay, design, social bio — and get a specific, honest critique followed by a concrete upgrade checklist. Funny. Useful. Built to be shared.</p>
+  <div class="hero-meta">
+    <div class="mi"><span class="ml">Category</span><span class="mv">AI Utility / Fun</span></div>
+    <div class="mi"><span class="ml">Platforms</span><span class="mv">Web · iOS</span></div>
+    <div class="mi"><span class="ml">Build order</span><span class="mv">Recommended first — lowest effort, highest viral potential</span></div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec"><div class="sl">Why it works</div>
+    <div class="g2">
+      <div class="card card2"><h3>Gen Z wants actual honesty</h3><p>The generation that grew up on "ratio" and "L + no cap" wants direct feedback — they're tired of empty validation. Roast gives them honesty wrapped in humour.</p></div>
+      <div class="card card2"><h3>Shareable by design</h3><p>"Look at what AI said about my portfolio" is a post people make. Every share is a free ad. No growth hacking needed — virality is baked into the core format.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Core features</div><h2>What Roast does</h2>
+    <div class="fg">
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">01</div><h3>Multi-format input</h3><p>Paste a URL, paste code, upload a PDF (essay, CV), upload an image (design, screenshot), or paste a social bio. Roast handles any format.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">02</div><h3>Tone slider</h3><p>Gentle nudge → Honest friend → Full roast. Users choose how brutal. Same feedback, different delivery. The slider is the centrepiece UI element.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">03</div><h3>The roast</h3><p>A punchy, specific critique using the actual content. "Your hero section is giving 2019 Bootstrap template" hits differently than "improve your design." Specificity is everything.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">04</div><h3>Upgrade checklist</h3><p>After the roast: a concrete numbered list of exactly what to fix, prioritised. The roast gets attention. The checklist delivers the actual value.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">05</div><h3>Send to VibesAI</h3><p>If the roast is about a website or code project, one tap opens it in VibesAI with the roast feedback pre-loaded as the first prompt. Roast to fix in seconds.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--roast)"></div><div class="fn" style="color:var(--roast)">06</div><h3>Share your roast</h3><p>One-tap share to Prism social as a stylised card — shows your score, the most savage line, and your username. Friends can add their own burns in comments.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">AI prompt engineering</div><h2>Making the roast actually good</h2>
+    <div class="card" style="margin-bottom:10px"><h3>The system prompt is everything</h3><p>Instruct Claude to: reference actual content (not generic advice), match the tone slider precisely, always end with actionable improvements, and never be mean-spirited. The goal is growth, not destruction. Test this prompt more than anything else in the app.</p></div>
+    <div class="card" style="margin-bottom:10px"><h3>Three distinct tone variants</h3><p>Three separate system prompts — one per tone. "Gentle" = supportive mentor with kind honesty. "Full roast" = sharp-witted critic who is always constructive. Test all three extensively with real submissions before launch.</p></div>
+    <div class="card"><h3>Input type routing</h3><p>URL = fetch page content server-side then analyse. Image = Claude vision describes before critiquing. Code = analyse structure, readability, best practices. Essay = argument, structure, clarity. Each input type needs a tailored prompt prefix.</p></div>
+  </div>
+  <div class="sec"><div class="sl">Tech stack</div>
+    <div class="sg">
+      <div class="sc"><div class="scat">Frontend</div><div class="sv">Next.js</div><p>Web-first. File upload, URL input, tone slider, streamed roast output. Server-side API routes for all Claude calls.</p></div>
+      <div class="sc"><div class="scat">AI</div><div class="sv">Claude Sonnet 4.6</div><p>Vision for images, text for code/essays/URLs. Stream the roast response for dramatic effect — watching it type out is part of the experience.</p></div>
+      <div class="sc"><div class="scat">URL scraping</div><div class="sv">Cheerio / Puppeteer</div><p>Server-side URL fetching. Extract main content, strip nav/footer noise, send clean text to Claude. Rate-limit to prevent abuse.</p></div>
+      <div class="sc"><div class="scat">Share cards</div><div class="sv">Satori (Vercel)</div><p>Generate shareable roast cards as images server-side. Satori turns React components into OG images — perfect for this use case.</p></div>
+      <div class="sc"><div class="scat">Database</div><div class="sv">Supabase</div><p>roasts table: user_id, input_type, roast_text, checklist, tone, created_at. Save history for Pro users.</p></div>
+      <div class="sc"><div class="scat">Rate limiting</div><div class="sv">Upstash Redis</div><p>Free: 3 roasts/day. Pro: unlimited. Sliding window rate limiting. Critical for cost control at scale.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Suite connections</div>
+    <div class="conns">
+      <div class="ci"><span class="ca" style="background:var(--surface3);color:#c0b090">VibesAI</span><p>"Fix this in VibesAI" on code and website roasts. Pre-loads the project and roast feedback as the first prompt. Seamless cross-app handoff.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--grind-bg);color:var(--grind)">Grind</span><p>Roast a Grind progress report: "Here's my goal and what I've done — roast my progress." Adds honest accountability to the goal loop.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--surface3);color:#9aa8e0">Prism Social</span><p>Share roast cards to Prism social. Friends can comment with their own takes. The card format is designed to drive engagement.</p></div>
+      <div class="ci"><span class="ca" style="background:var(--mood-bg);color:var(--mood)">Mood</span><p>If today's mood score is very low, Roast defaults to "Gentle nudge" tone regardless of slider setting. Don't kick people when they're down.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Monetisation</div>
+    <div class="g3">
+      <div class="card"><h3>Free</h3><p>3 roasts per day. Text and URL inputs only. Standard roast card sharing.</p></div>
+      <div class="card"><h3>Roast Pro</h3><p>Unlimited roasts. Image/vision input. Full history. Custom share card styles. Priority AI queue.</p></div>
+      <div class="card"><h3>Prism Pass</h3><p>Roast Pro included in the full Prism suite subscription.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Roadmap</div>
+    <div class="rm">
+      <div class="rmi"><div class="rml"><div class="rmd" style="background:var(--roast);border-color:var(--roast);color:#fff">1</div><div class="rml-line"></div></div><div class="rmb"><h3>MVP — text + URL roasts</h3><p>Paste text or URL, pick tone, get roast + checklist. Web only. Shareable card. Ship this first — lowest effort, highest viral return.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">2</div><div class="rml-line"></div></div><div class="rmb"><h3>Image + vision roasts</h3><p>Upload designs, screenshots, CVs as images. Claude vision analyses and roasts. VibesAI integration goes live.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">3</div><div class="rml-line"></div></div><div class="rmb"><h3>Social + history</h3><p>Full roast history per user. Share to Prism social. Grind and Mood integration. Community roast battles feature.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">4</div></div><div class="rmb"><h3>iOS app</h3><p>Native iOS for camera input and share sheet integration. Prism Pass integration.</p></div></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Open questions</div>
+    <div class="card ql">
+      <div class="qi"><span class="qm">?</span><div><h4>How to prevent roasting other people's work?</h4><p>Designed for self-improvement, not bullying. Terms of service must be clear. Consider a "this is my work" checkbox and content moderation on shared cards.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Cost ceiling per user</h4><p>URL scraping + vision + Claude per roast could get expensive. Model cost per roast at each tone level and set free tier limits accordingly before launch.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Roast battles</h4><p>Two users roast each other's work simultaneously and the community votes. High engagement potential but needs careful moderation design before building.</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MOOD -->
+<div id="pg-mood" class="page">
+<div class="hero">
+  <div class="glow" style="width:500px;height:500px;top:-150px;right:-80px;background:radial-gradient(circle,#C07BC4,transparent);"></div>
+  <div class="badge"><span class="bdot" style="background:var(--mood)"></span>Prism Suite — App Plan</div>
+  <h1><span style="background:linear-gradient(135deg,#C07BC4,#dca8e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prism Mood</span></h1>
+  <p>An AI emotional intelligence layer. 10-second daily check-in. Over time, AI spots patterns and quietly personalises the entire Prism suite based on how you're feeling. Not therapy — self-knowledge.</p>
+  <div class="hero-meta">
+    <div class="mi"><span class="ml">Category</span><span class="mv">AI Wellness</span></div>
+    <div class="mi"><span class="ml">Platforms</span><span class="mv">iOS · Web</span></div>
+    <div class="mi"><span class="ml">Suite role</span><span class="mv">Invisible intelligence layer across all Prism apps</span></div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec"><div class="sl">Why it works</div>
+    <div class="g2">
+      <div class="card card2"><h3>10 seconds a day — zero friction</h3><p>The check-in takes under 10 seconds. A single tap on a mood scale, optional one-word tag. That's it. The magic is in what AI does with that tiny data point over time.</p></div>
+      <div class="card card2"><h3>The glue of the Prism suite</h3><p>Mood is the only Prism app that makes every other app better by existing. It's infrastructure disguised as a wellness app — and that's its superpower.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Core features</div><h2>What Mood does</h2>
+    <div class="fg">
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">01</div><h3>Daily check-in</h3><p>1–5 scale tap. Optional one-word context tag: "tired", "hyped", "anxious", "creative". Optional voice note. Under 10 seconds. Every day.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">02</div><h3>Weekly AI insight</h3><p>Claude analyses the week's data and surfaces patterns: best days, worst days, correlations. "You feel best on Thursdays. Your lowest days follow 3+ hours of screen time."</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">03</div><h3>Suite personalisation</h3><p>Mood score is available to all Prism apps via an internal API. Each app reads today's score and adapts the experience. This is the killer feature — built over time, not at launch.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">04</div><h3>Mood history + heatmap</h3><p>A calendar heatmap and trend line showing mood over the past month and year. Tap any day to see the tag and what was happening. Your emotional year in data.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">05</div><h3>Close friend sharing</h3><p>Share your mood with up to 5 close friends — not public. Just your inner circle can see your vibe today. They can send a quick reaction. Intimate, not performative.</p></div>
+      <div class="ft"><div class="ftl" style="background:var(--mood)"></div><div class="fn" style="color:var(--mood)">06</div><h3>Crisis-aware design</h3><p>If a user logs very low moods for 3+ consecutive days, Mood gently surfaces wellbeing resources. Not alarming — warm and human. This is a non-negotiable safety feature.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Shared mood API</div><h2>How Mood feeds the rest of Prism</h2>
+    <div class="card" style="margin-bottom:10px"><h3>The mood/today endpoint</h3><p>Mood exposes an internal API: <code>GET /api/mood/today?user_id=X</code> — returns today's score (1–5), tag, and a derived energy level (low / medium / high). Every Prism app calls this on load and adapts accordingly. User data stays in their account — zero third-party access.</p></div>
+    <div class="card">
+      <h3>What each app does with the score</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+        <div class="dr"><div class="dd"></div><p><strong style="color:var(--grind)">Grind:</strong> Score 1–2 = lighter mission, no streak pressure. Score 4–5 = stretch mission offered.</p></div>
+        <div class="dr"><div class="dd"></div><p><strong style="color:var(--roast)">Roast:</strong> Score 1–2 = tone defaults to Gentle nudge regardless of slider position.</p></div>
+        <div class="dr"><div class="dd"></div><p><strong style="color:var(--drop)">Drop:</strong> Score 4–5 = suggest creating a memory capsule. "Today feels special — lock it."</p></div>
+        <div class="dr"><div class="dd"></div><p><strong style="color:#9aa8e0">Prism Social:</strong> Score 1–2 = feed slows down, shows calmer content, hides high-stimulation posts.</p></div>
+        <div class="dr"><div class="dd"></div><p><strong style="color:#c0b090">VibesAI:</strong> Score 1–2 = suggest calmer project types. Score 4–5 = encourage ambitious builds.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Tech stack</div>
+    <div class="sg">
+      <div class="sc"><div class="scat">Frontend</div><div class="sv">Next.js + React Native</div><p>iOS first for this one — daily check-in habits form best on mobile. Web as secondary surface.</p></div>
+      <div class="sc"><div class="scat">Database</div><div class="sv">Supabase</div><p>mood_logs: user_id, score (1–5), tag, note, created_at. Index on user_id + created_at for fast weekly queries.</p></div>
+      <div class="sc"><div class="scat">AI</div><div class="sv">Claude Sonnet 4.6</div><p>Weekly insight generation only — not called on every check-in. Batch the week's data every Sunday. Keeps AI costs very low.</p></div>
+      <div class="sc"><div class="scat">Shared API</div><div class="sv">Supabase Edge Function</div><p>The mood/today endpoint all Prism apps consume. Returns score + energy level. Requires Prism ID auth token.</p></div>
+      <div class="sc"><div class="scat">Notifications</div><div class="sv">Expo Notifications</div><p>One daily check-in reminder at a user-chosen time. Maximum one notification per day — this app must never feel needy.</p></div>
+      <div class="sc"><div class="scat">Privacy</div><div class="sv">Zero third-party sharing</div><p>Mood data never leaves Prism servers. No analytics, no ads, no training on user mood data. State this explicitly in onboarding.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Design principles</div><h2>This app must feel safe</h2>
+    <div class="card" style="margin-bottom:10px"><h3>Never make users feel judged</h3><p>Low mood scores should never trigger guilt or unsolicited advice. The UI response to a 1/5 should feel like a warm hug, not a health alert. Colour, copy, and micro-interactions all need to reinforce this.</p></div>
+    <div class="card" style="margin-bottom:10px"><h3>Privacy by default</h3><p>Nothing is shared unless the user explicitly enables it. State clearly in onboarding: "Your mood data stays on your account. We never share or sell it."</p></div>
+    <div class="card"><h3>Crisis handling — required before launch</h3><p>3+ consecutive days of score 1 = gently surface wellbeing resources. This feature must be reviewed by someone with mental health expertise before launch. Calm, warm, human — never alarming. This is a non-negotiable safety requirement.</p></div>
+  </div>
+  <div class="sec"><div class="sl">Monetisation</div>
+    <div class="g3">
+      <div class="card"><h3>Free</h3><p>Daily check-in, 30-day history, basic weekly insight, close friend sharing (up to 3).</p></div>
+      <div class="card"><h3>Mood Pro</h3><p>Full history, detailed AI insights, suite personalisation, up to 10 friends, exportable data.</p></div>
+      <div class="card"><h3>Prism Pass</h3><p>Mood Pro included. Suite personalisation only works when Mood is connected — strong incentive to go all-in on Prism Pass.</p></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Roadmap</div>
+    <div class="rm">
+      <div class="rmi"><div class="rml"><div class="rmd" style="background:var(--mood);border-color:var(--mood);color:#fff">1</div><div class="rml-line"></div></div><div class="rmb"><h3>MVP — check-in + history</h3><p>Daily check-in, 30-day calendar heatmap, basic trend line. Web + iOS simultaneously — this app lives on mobile.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">2</div><div class="rml-line"></div></div><div class="rmb"><h3>AI insights + shared API</h3><p>Weekly Claude insight generation. Build the mood/today API endpoint. Connect Grind and Drop first — highest suite impact.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">3</div><div class="rml-line"></div></div><div class="rmb"><h3>Social + full suite connection</h3><p>Close friend sharing. Connect Roast, VibesAI, and Prism Social to the mood API. Crisis-aware safety features go live.</p></div></div>
+      <div class="rmi"><div class="rml"><div class="rmd">4</div></div><div class="rmb"><h3>Deep insights + Prism Pass</h3><p>Long-term pattern analysis, exportable data, advanced correlations, full Prism Pass integration.</p></div></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sl">Open questions</div>
+    <div class="card ql">
+      <div class="qi"><span class="qm">?</span><div><h4>Mental health safety review</h4><p>Crisis detection and resource surfacing must be reviewed by someone with mental health expertise before launch. This is a legal and ethical requirement, not optional.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>Can users game mood scores?</h4><p>If users log 1/5 daily to get easier Grind missions, the app stops being useful. Use a 3-day rolling average for Grind integration rather than today's score alone.</p></div></div>
+      <div class="qi"><span class="qm">?</span><div><h4>GDPR and full data deletion</h4><p>Mood data is highly personal. Full export and one-tap deletion must ship in the MVP — not V2. Required from day one.</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function sp(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('pg-' + id).classList.add('active');
+  if (btn) { btn.classList.add('active'); }
+  else { document.querySelectorAll('.nav-tab').forEach(t => { if(t.textContent.toLowerCase().includes(id)) t.classList.add('active'); }); }
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
